@@ -472,5 +472,4 @@ function ToggleRow({ label, desc, checked, onChange }: { label: string; desc: st
 function Divider() {
   return <div style={{ height:1, background:'var(--border-subtle)', margin:'0 18px' }} />;
 }
-TSEOF
-echo "SettingsView.tsx done"
+
