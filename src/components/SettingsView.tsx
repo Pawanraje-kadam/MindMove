@@ -1,8 +1,3 @@
-Write the full new SettingsView
-Write the full new SettingsView
-
-Write the full new SettingsView
-bash
 
 cat > /home/claude/MindMove/src/components/SettingsView.tsx << 'TSEOF'
 import { useState } from 'react';
