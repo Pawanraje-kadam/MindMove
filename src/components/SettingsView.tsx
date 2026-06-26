@@ -1,5 +1,4 @@
 
-cat > /home/claude/MindMove/src/components/SettingsView.tsx << 'TSEOF'
 import { useState } from 'react';
 import { useGameStore } from '../store/gameStore';
 import { sounds } from '../utils/sounds';
