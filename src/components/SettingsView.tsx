@@ -1,138 +1,62 @@
-import { useState } from 'react';
 import { useGameStore } from '../store/gameStore';
-import { sounds } from '../utils/sounds';
 
 export default function SettingsView() {
-  const { showCoordinates, toggleCoordinates, boardFlipped, flipBoard } = useGameStore();
-  const [soundEnabled, setSoundEnabled] = useState(sounds.isEnabled());
+  const { showCoordinates, toggleCoordinates, setView } = useGameStore();
 
-  const handleSound = () => {
-    const next = !soundEnabled;
-    setSoundEnabled(next);
-    sounds.toggle(next);
-    if (next) sounds.move();
-  };
+  const themes = [
+    { id: 'classic', name: 'Classic' },
+    { id: 'wood', name: 'Wood' },
+    { id: 'ocean', name: 'Ocean' },
+    { id: 'midnight', name: 'Midnight' },
+  ];
+
+  const pieceSets = ['staunton', 'alpha', 'merida'];
 
   return (
-    <div className="home-container">
-      <div className="home-content" style={{ maxWidth: 480 }}>
-        <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold" style={{ color: 'var(--text)' }}>Settings</h1>
-          <p className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>Customize your experience</p>
-        </div>
+    <div className="p-8 max-w-xl mx-auto">
+      <h1 className="text-3xl font-bold mb-8">Settings</h1>
 
-        {/* Board Settings */}
-        <div className="card mb-4">
-          <div className="card-header">
-            <h3>Board</h3>
-          </div>
-          <div className="divide-y" style={{ borderColor: 'var(--border-subtle)' }}>
-            <SettingRow
-              label="Show Coordinates"
-              desc="Display rank and file labels"
-              checked={showCoordinates}
-              onChange={toggleCoordinates}
-            />
-            <SettingRow
-              label="Flip Board"
-              desc="View from black's perspective"
-              checked={boardFlipped}
-              onChange={flipBoard}
-            />
+      <div className="space-y-8">
+        {/* Board Theme */}
+        <div>
+          <h3 className="font-semibold mb-3 text-sm tracking-widest text-white/60">BOARD THEME</h3>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            {themes.map((theme) => (
+              <button
+                key={theme.id}
+                onClick={() => {
+                  document.documentElement.setAttribute('data-board-theme', theme.id);
+                }}
+                className="p-4 rounded-2xl bg-[#111827] border border-white/10 hover:border-[#3d9cf5] transition"
+              >
+                {theme.name}
+              </button>
+            ))}
           </div>
         </div>
 
-        {/* Sound Settings */}
-        <div className="card mb-4">
-          <div className="card-header">
-            <h3>Sound</h3>
-          </div>
-          <div>
-            <SettingRow
-              label="Sound Effects"
-              desc="Move, capture, and game sounds"
-              checked={soundEnabled}
-              onChange={handleSound}
-            />
+        {/* Piece Set */}
+        <div>
+          <h3 className="font-semibold mb-3 text-sm tracking-widest text-white/60">PIECE SET</h3>
+          <div className="flex gap-3">
+            {pieceSets.map((set, index) => (
+              <button key={index} className="px-5 py-3 rounded-xl bg-[#111827] border border-white/10 hover:border-[#3d9cf5]">
+                {set}
+              </button>
+            ))}
           </div>
         </div>
 
-        {/* Shortcuts */}
-        <div className="card mb-4">
-          <div className="card-header">
-            <h3>Keyboard Shortcuts</h3>
-          </div>
-          <div className="card-body space-y-3">
-            <Shortcut keys={['←', '→']} action="Navigate moves" />
-            <Shortcut keys={['↑', '↓']} action="Jump to start/end" />
-            <Shortcut keys={['F']} action="Flip board" />
-          </div>
+        <div className="flex items-center justify-between bg-[#111827] p-4 rounded-2xl">
+          <span>Show Coordinates</span>
+          <button onClick={toggleCoordinates} className="btn btn-secondary">
+            {showCoordinates ? 'On' : 'Off'}
+          </button>
         </div>
 
-        {/* About */}
-        <div className="card">
-          <div className="card-header">
-            <h3>About</h3>
-          </div>
-          <div className="card-body">
-            <p className="text-xs leading-relaxed mb-4" style={{ color: 'var(--text-muted)' }}>
-              Indo Chess features a FIDE-compliant engine with minimax search, alpha-beta pruning, 
-              transposition tables, and advanced positional evaluation.
-            </p>
-            <div className="grid grid-cols-2 gap-3">
-              <div className="p-3 rounded-lg text-center" style={{ background: 'var(--bg)' }}>
-                <div className="text-[10px]" style={{ color: 'var(--text-muted)' }}>Engine</div>
-                <div className="text-sm font-bold" style={{ color: 'var(--text)' }}>Indo AI v1.0</div>
-              </div>
-              <div className="p-3 rounded-lg text-center" style={{ background: 'var(--bg)' }}>
-                <div className="text-[10px]" style={{ color: 'var(--text-muted)' }}>Search</div>
-                <div className="text-sm font-bold" style={{ color: 'var(--text)' }}>α-β + TT</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function SettingRow({ label, desc, checked, onChange }: { 
-  label: string; desc: string; checked: boolean; onChange: () => void 
-}) {
-  return (
-    <div className="flex items-center justify-between px-5 py-4">
-      <div>
-        <div className="text-sm font-semibold" style={{ color: 'var(--text)' }}>{label}</div>
-        <div className="text-xs" style={{ color: 'var(--text-muted)' }}>{desc}</div>
-      </div>
-      <button
-        onClick={onChange}
-        className="relative w-12 h-7 rounded-full transition-colors duration-200"
-        style={{ background: checked ? 'var(--accent)' : 'var(--elevated)' }}
-      >
-        <span
-          className="absolute top-1 w-5 h-5 rounded-full bg-white shadow-md transition-all duration-200"
-          style={{ left: checked ? '26px' : '4px' }}
-        />
-      </button>
-    </div>
-  );
-}
-
-function Shortcut({ keys, action }: { keys: string[]; action: string }) {
-  return (
-    <div className="flex items-center justify-between">
-      <span className="text-xs" style={{ color: 'var(--text-secondary)' }}>{action}</span>
-      <div className="flex gap-1">
-        {keys.map((k, i) => (
-          <kbd 
-            key={i} 
-            className="px-2 py-1 rounded text-[10px] font-mono"
-            style={{ background: 'var(--bg)', border: '1px solid var(--border)', color: 'var(--text-secondary)' }}
-          >
-            {k}
-          </kbd>
-        ))}
+        <button onClick={() => setView('home')} className="mt-6 text-sm text-white/60 hover:text-white">
+          ← Back to Home
+        </button>
       </div>
     </div>
   );
