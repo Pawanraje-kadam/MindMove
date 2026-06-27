@@ -67,7 +67,7 @@ interface GameStore {
   toggleCoordinates: () => void;
   goToMove: (index: number) => void;
   tickClock: () => void;
-  stopClock: () => void; 
+  stopClock: () => void;
   dismissGameOver: () => void;
   setPlayerName: (name: string) => void;
   startAnalysis: () => void;
@@ -154,12 +154,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
     if (clock.intervalId) clearInterval(clock.intervalId);
     set(s => ({ clock: { ...s.clock, active: false, intervalId: null } }));
   },
-dismissGameOver: () => {
-  const { gameState } = get();
-  const s = cloneGameState(gameState);
-  s.isGameOver = false;
-  set({ gameState: s });
-},
+
+  dismissGameOver: () => {
+    const { gameState } = get();
+    const s = cloneGameState(gameState);
+    s.isGameOver = false;
+    set({ gameState: s });
+  },
+
   selectSquare: (pos) => {
     const { gameState, selectedSquare, legalMoves, gameConfig } = get();
     if (gameState.isGameOver) return;
