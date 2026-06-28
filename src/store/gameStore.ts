@@ -11,10 +11,12 @@ import {
 import { findBestMove, evaluatePosition } from '../engine/ai';
 import { analyzeMove, computeSummary } from '../engine/analysis';
 import { loadOpeningBook } from '../engine/openingBook';
+import { loadNNUEWeights } from '../engine/nnue';
 import { sounds } from '../utils/sounds';
 
 // Load opening book in background — won't block gameplay
 loadOpeningBook('/book.bin').catch(() => {});
+loadNNUEWeights('/weights.bin').catch(() => {});
 
 interface ClockState {
   white: number;
