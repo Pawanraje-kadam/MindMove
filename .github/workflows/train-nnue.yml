@@ -67,5 +67,10 @@ jobs:
             echo "No structural changes found in weight evaluations. Skipping push."
           else
             git commit -m "🧠 Automated NNUE weights update [$(date '+%Y-%m-%d')]"
-            git push
+            
+            # Fetch remote updates and layer our commit cleanly on top to avoid rejection
+            git pull --rebase origin main
+            
+            # Push the synchronized changes back home
+            git push origin main
           fi
