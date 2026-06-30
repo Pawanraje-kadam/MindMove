@@ -319,12 +319,43 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   triggerAIMove: () => {
-    const { gameState, gameConfig } = get();
+    const { gameState, gameConfig, clock } = get();
     if (gameState.isGameOver) return;
     set({ isThinking: true });
+
+    // Snapshot the clock the instant AI starts thinking — used to bill
+    // elapsed wall-clock time back onto the AI's remaining time even
+    // though the synchronous search blocks setInterval from ticking.
+    const aiColor = gameState.turn;
+    const thinkStart = performance.now();
+    const clockWasActive = clock.active;
+
     setTimeout(() => {
       const move = findBestMove(gameState, gameConfig.difficulty);
+      const elapsedMs = performance.now() - thinkStart;
+
       set({ isThinking: false });
+
+      // Manually deduct the real time the search took, since the
+      // setInterval ticker was frozen while findBestMove() ran
+      // synchronously on the main thread.
+      if (clockWasActive) {
+        set(s => {
+          const remaining = Math.max(0, s.clock[aiColor] - elapsedMs);
+          if (remaining <= 0 && !s.gameState.isGameOver) {
+            if (s.clock.intervalId) clearInterval(s.clock.intervalId);
+            const timedOut = cloneGameState(s.gameState);
+            timedOut.isGameOver = true;
+            timedOut.winner = aiColor === 'white' ? 'black' : 'white';
+            sounds.gameEnd();
+            return { gameState: timedOut, clock: { ...s.clock, [aiColor]: 0, active: false, intervalId: null } };
+          }
+          return { clock: { ...s.clock, [aiColor]: remaining } };
+        });
+      }
+
+      if (get().gameState.isGameOver) return;
+
       if (move) {
         if (move.captured) sounds.capture();
         else if (move.isCastle) sounds.castle();
