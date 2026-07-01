@@ -8,6 +8,7 @@ import GameView from './components/GameView';
 import AnalysisView from './components/AnalysisView';
 import SettingsView from './components/SettingsView';
 import PlaceholderView from './components/PlaceholderView';
+import LearnView from './components/learn/LearnView';
 
 export default function App() {
   useKeyboardShortcuts();
@@ -20,7 +21,7 @@ export default function App() {
       case 'analysis': return <AnalysisView />;
       case 'settings': return <SettingsView />;
       case 'puzzles': return <PlaceholderView title="Puzzles" description="Tactical training coming soon" icon="🧩" />;
-      case 'learn': return <PlaceholderView title="Learn" description="Interactive lessons coming soon" icon="📚" />;
+      case 'learn': return <LearnView />;
       case 'leaderboard': return <PlaceholderView title="Leaderboard" description="Rankings coming soon" icon="🏆" />;
       default: return <HomeView />;
     }

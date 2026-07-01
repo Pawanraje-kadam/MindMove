@@ -109,6 +109,48 @@ export const FILE_LETTERS = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 export const RANK_NUMBERS = ['8', '7', '6', '5', '4', '3', '2', '1'];
 
 // ── Analysis types ──────────────────────────────────────────
+// ── Learn types ──────────────────────────────────────────────
+export interface LearnChapter {
+  id: string;
+  title: string;
+  description: string;
+  order: number;
+  sections: LearnSection[];
+}
+
+export interface LearnSection {
+  id: string;
+  title: string;
+  description: string;
+  order: number;
+  frames: LearnFrame[];
+}
+
+export interface LearnFrame {
+  id: string;
+  fen: string;
+  turn: PieceColor;
+  instruction: string;
+  question: string;
+  type: 'multiple-choice' | 'make-move' | 'reveal';
+  choices: LearnChoice[];
+  explanation: string;
+}
+
+export interface LearnChoice {
+  id: string;
+  text: string;
+  isCorrect: boolean;
+}
+
+export interface LearnProgress {
+  completedFrames: string[];
+  currentChapterId: string;
+  currentSectionId: string;
+  currentFrameIndex: number;
+}
+
+// ── Analysis types ──────────────────────────────────────────
 export interface AnalyzedMove {
   moveIndex: number;          // index in gameHistory (1-based, matches historyIndex)
   san: string;
