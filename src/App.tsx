@@ -7,7 +7,7 @@ import HomeView from './components/HomeView';
 import GameView from './components/GameView';
 import AnalysisView from './components/AnalysisView';
 import SettingsView from './components/SettingsView';
-import PlaceholderView from './components/PlaceholderView';
+import PuzzlesView from './components/PuzzlesView';
 import LearnView from './components/learn/LearnView';
 
 export default function App() {
@@ -20,7 +20,7 @@ export default function App() {
       case 'play': return <GameView />;
       case 'analysis': return <AnalysisView />;
       case 'settings': return <SettingsView />;
-      case 'puzzles': return <PlaceholderView title="Puzzles" description="Tactical training coming soon" icon="🧩" />;
+      case 'puzzles': return <PuzzlesView />;
       case 'learn': return <LearnView />;
       case 'leaderboard': return <PlaceholderView title="Leaderboard" description="Rankings coming soon" icon="🏆" />;
       default: return <HomeView />;

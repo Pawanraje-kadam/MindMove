@@ -4,12 +4,14 @@ import { useLearnStore } from '../../store/learnStore';
 import { learnContent } from '../../data/learnContent';
 import LearnSidebar from './LearnSidebar';
 import MiniBoard from './MiniBoard';
+import LearnProgress from './LearnProgress';
 
 export default function LearnView() {
   const { setView, newGame } = useGameStore();
   const {
     progress, setCurrentSection, setCurrentFrame,
     completeFrame, goNextFrame, goPrevFrame, isFrameCompleted,
+    learnMode, setLearnMode,
   } = useLearnStore();
 
   const [selectedChoice, setSelectedChoice] = useState<string | null>(null);
@@ -70,46 +72,84 @@ export default function LearnView() {
     setCurrentFrame(0);
   }, [setCurrentSection, setCurrentFrame]);
 
+  // ── Progress mode ───────────────────────────────────────────
+  if (learnMode === 'progress') {
+    return (
+      <div style={{ display: 'flex', height: '100%', width: '100%' }}>
+        <LearnSidebar />
+        <LearnProgress />
+      </div>
+    );
+  }
+
+  // ── Empty state ──────────────────────────────────────────────
   if (!chapter || !section || !frame) {
     return (
-      <div className="home-container">
-        <div className="text-center max-w-sm">
-          <h2 className="text-2xl font-bold mb-2" style={{ color: 'var(--text)' }}>Learn</h2>
-          <p className="text-sm mb-6" style={{ color: 'var(--text-muted)' }}>
-            No content available
-          </p>
-          <div className="flex flex-col gap-3 max-w-xs mx-auto">
-            {chapter && (
-              <button
-                onClick={() => chapter.sections.length > 0 && handleNavSection(chapter.sections[0].id)}
-                className="btn btn-primary btn-lg w-full"
-              >
-                Start First Section
+      <div style={{ display: 'flex', height: '100%', width: '100%' }}>
+        <LearnSidebar />
+        <div className="home-container" style={{ flex: 1 }}>
+          <div className="text-center max-w-sm">
+            <h2 className="text-2xl font-bold mb-2" style={{ color: 'var(--text)' }}>Learn</h2>
+            <p className="text-sm mb-6" style={{ color: 'var(--text-muted)' }}>
+              No content available
+            </p>
+            <div className="flex flex-col gap-3 max-w-xs mx-auto">
+              {chapter && (
+                <button
+                  onClick={() => chapter.sections.length > 0 && handleNavSection(chapter.sections[0].id)}
+                  className="btn btn-primary btn-lg w-full"
+                >
+                  Start First Section
+                </button>
+              )}
+              <button onClick={() => setView('home')} className="btn btn-secondary w-full">
+                Back to Home
               </button>
-            )}
-            <button onClick={() => setView('home')} className="btn btn-secondary w-full">
-              Back to Home
-            </button>
+            </div>
           </div>
         </div>
       </div>
     );
   }
 
+  // ── Lessons mode (existing quiz UI) ──────────────────────────
   return (
     <div style={{ display: 'flex', height: '100%', width: '100%' }}>
       <LearnSidebar />
 
-      {/* Main content */}
       <div style={{
         flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden',
         background: 'radial-gradient(ellipse at 50% 0%, var(--raised) 0%, var(--bg) 60%, var(--void) 100%)',
       }}>
-        {/* header bar */}
+        {/* header bar with mode tabs */}
         <div style={{
           padding: '12px 24px', display: 'flex', alignItems: 'center', gap: 12,
           borderBottom: '1px solid var(--border-subtle)', background: 'var(--raised)', flexShrink: 0,
+          flexWrap: 'wrap',
         }}>
+          {/* mode tabs */}
+          <div style={{ display: 'flex', gap: 2, background: 'var(--bg)', borderRadius: 8, padding: 2 }}>
+            {([
+              { key: 'lessons' as const, label: 'Lessons' },
+              { key: 'progress' as const, label: 'Progress' },
+            ]).map(tab => (
+              <button
+                key={tab.key}
+                onClick={() => setLearnMode(tab.key)}
+                style={{
+                  padding: '6px 14px', borderRadius: 6, border: 'none',
+                  background: learnMode === tab.key ? 'var(--elevated)' : 'transparent',
+                  color: learnMode === tab.key ? 'var(--text)' : 'var(--text-muted)',
+                  cursor: 'pointer', fontSize: 12, fontWeight: 700, fontFamily: 'inherit',
+                  transition: 'all 150ms var(--ease)',
+                  boxShadow: learnMode === tab.key ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
+                }}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+
           <div style={{ flex: 1 }}>
             <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text)' }}>
               {section.title}
@@ -130,7 +170,6 @@ export default function LearnView() {
         {/* scrolling content */}
         <div style={{ flex: 1, overflowY: 'auto', padding: '24px 32px' }}>
           <div style={{ maxWidth: 640, margin: '0 auto' }}>
-            {/* MiniBoard */}
             <div style={{
               display: 'flex', justifyContent: 'center', marginBottom: 24,
               maxWidth: 320, marginLeft: 'auto', marginRight: 'auto',
@@ -138,7 +177,6 @@ export default function LearnView() {
               <MiniBoard fen={frame.fen} turn={frame.turn} size={320} />
             </div>
 
-            {/* instruction */}
             <div style={{
               padding: '12px 16px', marginBottom: 16, borderRadius: 'var(--radius)',
               background: 'var(--accent-subtle)', border: '1px solid var(--accent-glow)',
@@ -147,7 +185,6 @@ export default function LearnView() {
               {frame.instruction}
             </div>
 
-            {/* question */}
             <p style={{
               fontSize: 15, fontWeight: 600, color: 'var(--text)',
               marginBottom: 20, lineHeight: 1.5,
@@ -155,7 +192,6 @@ export default function LearnView() {
               {frame.question}
             </p>
 
-            {/* choices */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 20 }}>
               {frame.choices.map(choice => {
                 const isSelected = selectedChoice === choice.id;
@@ -211,7 +247,6 @@ export default function LearnView() {
               })}
             </div>
 
-            {/* explanation */}
             {showAnswer && (
               <div style={{
                 padding: '16px 20px', borderRadius: 'var(--radius)',
@@ -230,7 +265,6 @@ export default function LearnView() {
               </div>
             )}
 
-            {/* Navigation */}
             <div style={{
               display: 'flex', alignItems: 'center', justifyContent: 'space-between',
               paddingTop: 16, borderTop: '1px solid var(--border-subtle)',
@@ -270,7 +304,6 @@ export default function LearnView() {
               </button>
             </div>
 
-            {/* Section complete banner */}
             {progress.currentFrameIndex >= totalFrames - 1 && showAnswer && (
               <div style={{
                 marginTop: 20, padding: '16px 20px', borderRadius: 'var(--radius)',

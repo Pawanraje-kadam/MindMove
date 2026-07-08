@@ -108,6 +108,30 @@ export const PIECE_SYMBOLS: Record<PieceType, string> = {
 export const FILE_LETTERS = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 export const RANK_NUMBERS = ['8', '7', '6', '5', '4', '3', '2', '1'];
 
+// ── Fischer Puzzle types ──────────────────────────────────────
+export interface FischerPuzzle {
+  id: string;
+  chapter: number;
+  title: string;
+  fen: string;
+  turn: PieceColor;
+  correctMoves: string[];
+  hint: string;
+  explanation: string;
+}
+
+export interface PuzzleProgress {
+  solvedPuzzles: string[];
+  attemptedPuzzles: Record<string, number>;
+  streak: number;
+  bestStreak: number;
+  chapterStats: Record<number, { solved: number; total: number }>;
+  badges: string[];
+  currentChapterFilter: number | null;
+  currentPuzzleIndex: number;
+  puzzleOrder: string[];
+}
+
 // ── Analysis types ──────────────────────────────────────────
 // ── Learn types ──────────────────────────────────────────────
 export interface LearnChapter {

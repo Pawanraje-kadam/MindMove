@@ -968,6 +968,16 @@ export function parsePGN(pgn: string): string[] {
   return tokens;
 }
 
+export function moveToUCI(move: Move): string {
+  const fromFile = FILE_LETTERS[move.from.col];
+  const fromRank = 8 - move.from.row;
+  const toFile = FILE_LETTERS[move.to.col];
+  const toRank = 8 - move.to.row;
+  let uci = `${fromFile}${fromRank}${toFile}${toRank}`;
+  if (move.promotion) uci += move.promotion[0];
+  return uci;
+}
+
 export function findMoveFromSAN(state: GameState, san: string): Move | null {
   const legalMoves = generateLegalMoves(state);
   for (const move of legalMoves) {
