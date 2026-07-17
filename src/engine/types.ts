@@ -65,7 +65,7 @@ export type DrawReason = 'stalemate' | 'insufficient_material' | 'threefold_repe
 
 export type GameMode = 'hvh' | 'hva' | 'ava';
 export type Difficulty = 'beginner' | 'intermediate' | 'advanced' | 'master';
-export type AppView = 'home' | 'play' | 'puzzles' | 'learn' | 'analysis' | 'leaderboard' | 'settings';
+export type AppView = 'home' | 'play' | 'puzzles' | 'learn' | 'analysis' | 'leaderboard' | 'settings' | 'realm-chess';
 
 export interface GameConfig {
   mode: GameMode;

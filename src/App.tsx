@@ -9,6 +9,7 @@ import AnalysisView from './components/AnalysisView';
 import SettingsView from './components/SettingsView';
 import PuzzlesView from './components/PuzzlesView';
 import LearnView from './components/learn/LearnView';
+import RealmChessView from './components/realm-chess/RealmChessView';
 
 export default function App() {
   useKeyboardShortcuts();
@@ -22,6 +23,7 @@ export default function App() {
       case 'settings': return <SettingsView />;
       case 'puzzles': return <PuzzlesView />;
       case 'learn': return <LearnView />;
+      case 'realm-chess': return <RealmChessView />;
       case 'leaderboard': return <PlaceholderView title="Leaderboard" description="Rankings coming soon" icon="🏆" />;
       default: return <HomeView />;
     }
