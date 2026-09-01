@@ -64,7 +64,7 @@ export default function GameControls() {
             <button onClick={() => setShowConfirm(null)} className="btn btn-secondary btn-sm" style={{ flex:1 }}>Cancel</button>
             <button
               onClick={showConfirm === 'resign' ? handleResign : handleDraw}
-              className="btn btn-sm" style={{ flex:1, background: showConfirm === 'resign' ? 'var(--error)' : 'var(--warning)', color:'#000' }}>
+              className="btn btn-sm" style={{ flex:1, background: showConfirm === 'resign' ? '#d32f2f' : 'var(--warning)', color: showConfirm === 'resign' ? '#fff' : '#000' }}>
               {showConfirm === 'resign' ? 'Resign' : 'Offer Draw'}
             </button>
           </div>

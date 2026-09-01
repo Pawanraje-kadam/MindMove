@@ -74,7 +74,7 @@ export default function ToolsPanel() {
       {copied && (
         <div 
           className="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 rounded-full text-xs font-bold animate-fade-in"
-          style={{ background: 'var(--accent)', color: '#000', zIndex: 100 }}
+          style={{ background: 'var(--accent-fill)', color: '#fff', zIndex: 100 }}
         >
           ✓ {copied} copied
         </div>

@@ -9,6 +9,7 @@ import AnalysisView from './components/AnalysisView';
 import SettingsView from './components/SettingsView';
 import PuzzlesView from './components/PuzzlesView';
 import LearnView from './components/learn/LearnView';
+import PlaceholderView from './components/PlaceholderView';
 import RealmChessView from './components/realm-chess/RealmChessView';
 
 export default function App() {

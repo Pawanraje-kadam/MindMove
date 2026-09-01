@@ -928,8 +928,8 @@ function getDirections(type: PieceType): number[][] {
 
 export function exportPGN(state: GameState, headers?: Record<string, string>): string {
   const defaultHeaders: Record<string, string> = {
-    Event: 'Indo Chess Game',
-    Site: 'Indo Chess Platform',
+    Event: 'MindMove Game',
+    Site: 'MindMove',
     Date: new Date().toISOString().split('T')[0].replace(/-/g, '.'),
     Round: '1',
     White: 'Player 1',

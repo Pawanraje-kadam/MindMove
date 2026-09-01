@@ -265,7 +265,7 @@ export default function PuzzlesView() {
               className="btn btn-sm"
               style={{
                 opacity: isLastPuzzle ? 0.3 : 1,
-                background: 'var(--accent)', color: '#000',
+                background: 'var(--accent-fill)', color: '#fff',
                 border: 'none', borderRadius: 'var(--radius)',
                 padding: '8px 16px', cursor: isLastPuzzle ? 'not-allowed' : 'pointer',
                 fontWeight: 700, fontSize: 13, fontFamily: 'inherit',

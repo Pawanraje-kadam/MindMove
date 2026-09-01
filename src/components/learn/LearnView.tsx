@@ -294,7 +294,7 @@ export default function LearnView() {
                 className="btn btn-sm"
                 style={{
                   opacity: progress.currentFrameIndex >= totalFrames - 1 ? 0.3 : 1,
-                  background: 'var(--accent)', color: '#000',
+                  background: 'var(--accent-fill)', color: '#fff',
                   border: 'none', borderRadius: 'var(--radius)',
                   padding: '8px 16px', cursor: progress.currentFrameIndex >= totalFrames - 1 ? 'not-allowed' : 'pointer',
                   fontWeight: 700, fontSize: 13, fontFamily: 'inherit',

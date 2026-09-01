@@ -1,4 +1,4 @@
-/** Core chess types for Indo Chess engine */
+/** Core chess types for the MindMove engine */
 
 export type PieceColor = 'white' | 'black';
 export type PieceType = 'pawn' | 'knight' | 'bishop' | 'rook' | 'queen' | 'king';
