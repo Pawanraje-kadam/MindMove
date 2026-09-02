@@ -31,21 +31,32 @@ export default function App() {
   };
 
   return (
-    <div className="app">
-      <aside className="app-sidebar">
-        <Sidebar />
-      </aside>
-      <div className="app-main">
-        <header className="app-header">
-          <Header />
-        </header>
-        <main className="app-content">
-          {renderContent()}
-        </main>
-        <nav className="app-mobile-nav">
-          <MobileNav />
-        </nav>
+    <>
+      {/* Ambient background scene — orbs, glow, grain */}
+      <div className="app-bg" aria-hidden="true">
+        <div className="app-bg-orb app-bg-orb-a" />
+        <div className="app-bg-orb app-bg-orb-b" />
+        <div className="app-bg-grain" />
       </div>
-    </div>
+
+      <div className="app">
+        <aside className="app-sidebar">
+          <Sidebar />
+        </aside>
+        <div className="app-main">
+          <header className="app-header">
+            <Header />
+          </header>
+          <main className="app-content">
+            <div key={view} className="view-enter">
+              {renderContent()}
+            </div>
+          </main>
+          <nav className="app-mobile-nav safe-area-bottom">
+            <MobileNav />
+          </nav>
+        </div>
+      </div>
+    </>
   );
 }

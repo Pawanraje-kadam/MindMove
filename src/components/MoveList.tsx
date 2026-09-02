@@ -39,12 +39,7 @@ export default function MoveList() {
         <button
           onClick={copyPGN}
           title="Copy PGN"
-          style={{
-            fontSize:11, fontWeight:700, padding:'3px 8px', borderRadius:6,
-            border:'1px solid var(--border)', background:'var(--bg)',
-            color: copied ? 'var(--accent)' : 'var(--text-muted)',
-            cursor:'pointer', transition:'all 150ms', letterSpacing:'0.04em',
-          }}
+          className={`chip-btn ${copied ? 'chip-btn-copied' : ''}`}
         >
           {copied ? '✓ Copied' : 'PGN'}
         </button>

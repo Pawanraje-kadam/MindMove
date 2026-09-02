@@ -11,7 +11,7 @@ export default function GameOverOverlay() {
 
   if (!gameState.isGameOver) return null;
 
-  let icon = '🏆'; let title = ''; let subtitle = ''; let color = 'var(--accent)';
+  let icon = '♔'; let title = ''; let subtitle = ''; let color = 'var(--accent)';
 
   if (gameState.isCheckmate) {
     icon = gameState.winner === 'white' ? '♔' : '♚';
@@ -19,11 +19,11 @@ export default function GameOverOverlay() {
     subtitle = `${gameState.winner === 'white' ? 'White' : 'Black'} wins!`;
     color = 'var(--success)';
   } else if (gameState.isDraw) {
-    icon = '🤝'; title = 'Draw';
+    icon = '½'; title = 'Draw';
     subtitle = gameState.drawReason?.replace(/_/g, ' ') || 'Game drawn';
     color = 'var(--warning)';
   } else if (gameState.winner) {
-    icon = '🏳️'; title = 'Resigned';
+    icon = '⚑'; title = 'Resigned';
     subtitle = `${gameState.winner === 'white' ? 'White' : 'Black'} wins`;
     color = 'var(--error)';
   }
@@ -54,26 +54,26 @@ export default function GameOverOverlay() {
           onMouseLeave={e => (e.currentTarget.style.color = 'var(--text-muted)')}
         >×</button>
 
-        <div style={{ height:4, background:`linear-gradient(90deg,${color},transparent)` }} />
+        <div style={{ height:3, background:`linear-gradient(90deg, transparent, ${color}, transparent)` }} />
         <div className="modal-body">
-          <div className="modal-icon">{icon}</div>
+          <div className="modal-icon" style={{ color, textShadow:`0 0 40px ${color}` }}>{icon}</div>
           <div className="modal-title" style={{ color }}>{title}</div>
           <div className="modal-subtitle">{subtitle}</div>
-          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10, marginBottom:16 }}>
-            <div style={{ padding:'10px 12px', borderRadius:'var(--radius)', background:'var(--bg)', border:'1px solid var(--border)', textAlign:'center' }}>
-              <div style={{ fontSize:10, color:'var(--text-muted)', marginBottom:3, textTransform:'uppercase', letterSpacing:'0.06em' }}>Moves</div>
-              <div style={{ fontSize:20, fontWeight:700, color:'var(--text)' }}>{totalMoves}</div>
+          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10, marginBottom:18 }} className="stagger">
+            <div style={{ padding:'12px', borderRadius:'var(--radius)', background:'rgba(0,0,0,0.25)', border:'1px solid var(--border-subtle)', textAlign:'center' }}>
+              <div style={{ fontSize:10, fontWeight:700, color:'var(--text-muted)', marginBottom:3, textTransform:'uppercase', letterSpacing:'0.08em' }}>Moves</div>
+              <div style={{ fontSize:20, fontWeight:700, color:'var(--text)', fontVariantNumeric:'tabular-nums' }}>{totalMoves}</div>
             </div>
-            <div style={{ padding:'10px 12px', borderRadius:'var(--radius)', background:'var(--bg)', border:'1px solid var(--border)', textAlign:'center' }}>
-              <div style={{ fontSize:10, color:'var(--text-muted)', marginBottom:3, textTransform:'uppercase', letterSpacing:'0.06em' }}>Result</div>
-              <div style={{ fontSize:20, fontWeight:700, color }}>
+            <div style={{ padding:'12px', borderRadius:'var(--radius)', background:'rgba(0,0,0,0.25)', border:'1px solid var(--border-subtle)', textAlign:'center' }}>
+              <div style={{ fontSize:10, fontWeight:700, color:'var(--text-muted)', marginBottom:3, textTransform:'uppercase', letterSpacing:'0.08em' }}>Result</div>
+              <div style={{ fontSize:20, fontWeight:700, color, fontVariantNumeric:'tabular-nums' }}>
                 {gameState.isCheckmate ? (gameState.winner === 'white' ? '1-0' : '0-1') : '½-½'}
               </div>
             </div>
           </div>
           <div className="modal-actions">
             <button onClick={handleAnalyze} className="btn btn-primary w-full btn-lg">
-              🔬 Analyze Game
+              Analyze Game
             </button>
             <button onClick={() => { sounds.gameStart(); newGame(gameConfig); }} className="btn btn-secondary w-full">
               Play Again

@@ -8,7 +8,7 @@ import PlayerInfo from './PlayerInfo';
 import ToolsPanel from './ToolsPanel';
 
 export default function GameView() {
-  const { gameState, gameConfig, boardFlipped, isThinking, playerName } = useGameStore();
+  const { gameState, gameConfig, boardFlipped, isThinking } = useGameStore();
   const [showMobileSheet, setShowMobileSheet] = useState(false);
 
   const { turn, capturedPieces } = gameState;
@@ -92,8 +92,10 @@ function MobileControls({ onOpenSheet }: { onOpenSheet: () => void }) {
 
   return (
     <div style={{
-      display:'flex', alignItems:'center', gap:8, padding:'10px 12px',
-      borderRadius:12, background:'var(--raised)', border:'1px solid var(--border-subtle)',
+      display:'flex', alignItems:'center', gap:8, padding:'8px 10px',
+      borderRadius:14, background:'rgba(13,21,34,0.72)', backdropFilter:'blur(14px)',
+      border:'1px solid var(--border-subtle)',
+      boxShadow:'0 8px 24px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.04)',
     }}>
       <div className="control-group">
         <button onClick={undoMove} disabled={!canUndo} className="control-btn" title="Takeback">
@@ -109,9 +111,9 @@ function MobileControls({ onOpenSheet }: { onOpenSheet: () => void }) {
       </div>
 
       <div style={{ flex:1, textAlign:'center' }}>
-        <span style={{ fontSize:13, fontWeight:600, color:'var(--text-secondary)' }}>
+        <span style={{ fontSize:13, fontWeight:600, color:'var(--text-secondary)', fontVariantNumeric:'tabular-nums' }}>
           {gameState.isGameOver
-            ? (gameState.isCheckmate ? '♔ Checkmate' : gameState.isDraw ? '½-½ Draw' : '🏳 Resigned')
+            ? (gameState.isCheckmate ? '♔ Checkmate' : gameState.isDraw ? '½-½ Draw' : 'Resigned')
             : `Move ${Math.ceil(gameState.moveHistory.length / 2) || '—'}`}
         </span>
       </div>
@@ -123,7 +125,12 @@ function MobileControls({ onOpenSheet }: { onOpenSheet: () => void }) {
       </button>
 
       <button onClick={onOpenSheet}
-        style={{ width:34, height:34, display:'flex', alignItems:'center', justifyContent:'center', borderRadius:8, border:'none', background:'var(--accent)', color:'#fff', cursor:'pointer' }}>
+        style={{
+          width:38, height:38, display:'flex', alignItems:'center', justifyContent:'center',
+          borderRadius:10, border:'none', cursor:'pointer',
+          background:'linear-gradient(180deg, var(--accent-fill-hover) 0%, var(--accent-fill) 100%)',
+          color:'#fff', boxShadow:'0 2px 10px rgba(61,156,245,0.35), inset 0 1px 0 rgba(255,255,255,0.16)',
+        }}>
         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
           <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
         </svg>

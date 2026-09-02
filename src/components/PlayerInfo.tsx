@@ -21,7 +21,7 @@ function formatClock(ms: number): string {
 }
 
 export default function PlayerInfo({ color, name, isActive, captured, isThinking }: PlayerInfoProps) {
-  const { clock, gameConfig, playerName } = useGameStore();
+  const { clock, playerName } = useGameStore();
   const hasClock = clock.active || (clock.white > 0 || clock.black > 0);
   const timeMs = clock[color];
   const isLow = hasClock && timeMs < 30000; // under 30s
@@ -50,7 +50,7 @@ export default function PlayerInfo({ color, name, isActive, captured, isThinking
         <div style={{ display:'flex', alignItems:'center', gap:7, marginBottom:4 }}>
           <span className="player-name truncate">{displayName}</span>
           {isActive && !isThinking && (
-            <span style={{ width:6, height:6, borderRadius:'50%', background:'var(--accent)', animation:'pulseDot 2s infinite', display:'block', flexShrink:0 }} />
+            <span style={{ width:6, height:6, borderRadius:'50%', background:'var(--accent)', boxShadow:'0 0 8px var(--accent)', animation:'pulseDot 2s infinite', display:'block', flexShrink:0 }} />
           )}
           {isThinking && (
             <div className="thinking-indicator">
@@ -65,11 +65,11 @@ export default function PlayerInfo({ color, name, isActive, captured, isThinking
         <div style={{ display:'flex', alignItems:'center', gap:1, minHeight:20, flexWrap:'wrap' }}>
           {sorted.map((piece, i) => (
             <div key={i} style={{ width:17, height:17, marginRight:-2, filter:'drop-shadow(0 1px 1px rgba(0,0,0,0.3))' }}>
-              <ChessPiece type={piece.type} color={piece.color} className="w-full h-full" style={{ opacity:0.85 }} />
+              <ChessPiece type={piece.type} color={piece.color} className="w-full h-full opacity-90" />
             </div>
           ))}
           {advantage > 0 && (
-            <span style={{ fontSize:11, fontWeight:700, marginLeft:6, padding:'1px 5px', borderRadius:4, background:'rgba(0,0,0,0.3)', color:'var(--text-secondary)' }}>
+            <span style={{ fontSize:11, fontWeight:700, marginLeft:6, padding:'1px 6px', borderRadius:6, background:'rgba(0,0,0,0.32)', color:'var(--text-secondary)', fontVariantNumeric:'tabular-nums' }}>
               +{advantage}
             </span>
           )}

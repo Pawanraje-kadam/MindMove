@@ -419,18 +419,14 @@ export default function SettingsView() {
 
 function SettingCard({ title, icon, children }: { title: string; icon: string; children: React.ReactNode }) {
   return (
-    <div style={{
-      background:'var(--raised)', borderRadius:16,
-      boxShadow:'var(--shadow-md), inset 0 0 0 1px var(--border-subtle)',
-      overflow:'hidden',
-    }}>
+    <div className="card">
       <div style={{
         display:'flex', alignItems:'center', gap:10, padding:'13px 18px',
         borderBottom:'1px solid var(--border-subtle)',
-        background:'linear-gradient(180deg,var(--elevated) 0%,var(--raised) 100%)',
+        background:'linear-gradient(180deg, rgba(255,255,255,0.03) 0%, transparent 100%)',
       }}>
         <span style={{ fontSize:16 }}>{icon}</span>
-        <span style={{ fontSize:11, fontWeight:700, textTransform:'uppercase', letterSpacing:'0.09em', color:'var(--text-muted)' }}>
+        <span style={{ fontFamily:'var(--font-display)', fontSize:11, fontWeight:700, textTransform:'uppercase', letterSpacing:'0.09em', color:'var(--text-muted)' }}>
           {title}
         </span>
       </div>
@@ -449,21 +445,9 @@ function ToggleRow({ label, desc, checked, onChange }: { label: string; desc: st
         <div style={{ fontSize:14, fontWeight:600, color:'var(--text)' }}>{label}</div>
         <div style={{ fontSize:12, color:'var(--text-muted)', marginTop:2 }}>{desc}</div>
       </div>
-      <button onClick={onChange} style={{
-        position:'relative', width:48, height:28, borderRadius:14,
-        border:'none', cursor:'pointer', flexShrink:0,
-        background: checked
-          ? 'linear-gradient(135deg,#3d9cf5,#1b5ea8)'
-          : 'var(--elevated)',
-        boxShadow: checked ? '0 2px 10px rgba(61,156,245,0.35)' : 'inset 0 0 0 1px var(--border)',
-        transition:'all 200ms',
-      }}>
-        <span style={{
-          position:'absolute', top:4, width:20, height:20, borderRadius:'50%',
-          background:'#fff', boxShadow:'0 1px 4px rgba(0,0,0,0.3)',
-          transition:'left 200ms cubic-bezier(0.34,1.56,0.64,1)',
-          left: checked ? 24 : 4,
-        }} />
+      <button onClick={onChange} className={`toggle ${checked ? 'toggle-on' : ''}`}
+        role="switch" aria-checked={checked} aria-label={label}>
+        <span className="toggle-knob" style={{ left: checked ? 24 : 4 }} />
       </button>
     </div>
   );

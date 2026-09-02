@@ -15,32 +15,29 @@ const navItems: { view: AppView; label: string; icon: React.ReactNode }[] = [
 export default function Sidebar() {
   const { view, setView } = useGameStore();
   return (
-    <div style={{ display:'flex', flexDirection:'column', height:'100%', padding:'12px 0' }}>
-      <div style={{ display:'flex', justifyContent:'center', marginBottom:22 }}>
+    <div style={{ display:'flex', flexDirection:'column', height:'100%', padding:'14px 0' }}>
+      <div style={{ display:'flex', justifyContent:'center', marginBottom:26 }}>
         <div style={{
-          width:44, height:44, borderRadius:13, overflow:'hidden',
-          border:'1px solid rgba(61,156,245,0.22)',
-          boxShadow:'0 0 14px rgba(61,156,245,0.15)',
-        }}>
+          width:46, height:46, borderRadius:14, overflow:'hidden',
+          border:'1px solid rgba(61,156,245,0.28)',
+          boxShadow:'0 0 18px rgba(61,156,245,0.22), 0 4px 12px rgba(0,0,0,0.4)',
+          transition:'transform 300ms var(--ease-bounce), box-shadow 300ms var(--ease)',
+        }}
+          onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.06)'; e.currentTarget.style.boxShadow = '0 0 28px rgba(61,156,245,0.4), 0 6px 16px rgba(0,0,0,0.45)'; }}
+          onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = '0 0 18px rgba(61,156,245,0.22), 0 4px 12px rgba(0,0,0,0.4)'; }}
+        >
           <img src={logoDataUrl} alt="MM" style={{ width:'100%', height:'100%', objectFit:'cover', display:'block' }} />
         </div>
       </div>
-      <nav style={{ flex:1, display:'flex', flexDirection:'column', gap:2, padding:'0 6px' }}>
+      <nav style={{ flex:1, display:'flex', flexDirection:'column', gap:4, padding:'0 8px' }}>
         {navItems.map(({ view:v, label, icon }) => {
           const active = view === v;
           return (
-            <button key={v} onClick={() => setView(v)} style={{
-              position:'relative', display:'flex', flexDirection:'column', alignItems:'center', gap:5,
-              padding:'10px 4px', borderRadius:10, border:'none', cursor:'pointer',
-              background: active ? 'var(--accent-subtle)' : 'transparent',
-              color: active ? 'var(--accent)' : 'var(--text-muted)',
-              transition:'all 200ms var(--ease)',
-            }}>
-              {active && (
-                <div style={{ position:'absolute', left:0, top:'50%', transform:'translateY(-50%)', width:3, height:22, borderRadius:'0 3px 3px 0', background:'var(--accent)' }}/>
-              )}
-              <div style={{ width:20, height:20 }}>{icon}</div>
-              <span style={{ fontSize:9, fontWeight:700, letterSpacing:'0.04em', textTransform:'uppercase' }}>{label}</span>
+            <button key={v} onClick={() => setView(v)} title={label}
+              className={`side-nav-item ${active ? 'side-nav-item-active' : ''}`}>
+              {active && <div className="side-nav-active-bar" />}
+              <div className="side-nav-icon">{icon}</div>
+              <span className="side-nav-label">{label}</span>
             </button>
           );
         })}

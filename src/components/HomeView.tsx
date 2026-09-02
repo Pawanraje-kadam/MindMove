@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useGameStore } from '../store/gameStore';
 import { Difficulty, GameMode, PieceColor, TimeControl } from '../engine/types';
 import { sounds } from '../utils/sounds';
@@ -13,6 +13,48 @@ const TIME_PRESETS: { label: string; tc: TimeControl | null }[] = [
   { label: '10+0', tc: { initial: 600, increment: 0 } },
   { label: '15+5', tc: { initial: 900, increment: 5 } },
 ];
+
+/* ── Inline SVG icons (24px, stroke-based, single consistent set) ── */
+const Icon = {
+  users: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+      <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+    </svg>
+  ),
+  cpu: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/>
+      <path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3"/>
+    </svg>
+  ),
+  eye: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+    </svg>
+  ),
+  bolt: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+    </svg>
+  ),
+  analysis: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M3 3v18h18"/><path d="M7 14l4-4 4 3 5-6"/>
+    </svg>
+  ),
+  gear: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="3"/>
+      <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+    </svg>
+  ),
+  arrow: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M5 12h14M12 5l7 7-7 7"/>
+    </svg>
+  ),
+};
 
 export default function HomeView() {
   const { newGame, setView, playerName, setPlayerName } = useGameStore();
@@ -36,7 +78,7 @@ export default function HomeView() {
 
   return (
     <div className="home-container">
-      <div className="home-content">
+      <div className="home-content stagger">
 
         {/* Hero */}
         <div className="home-hero">
@@ -73,9 +115,9 @@ export default function HomeView() {
               <label className="field-label">Game Mode</label>
               <div className="option-grid option-grid-3">
                 {[
-                  { value: 'hvh' as GameMode, label: 'Local', icon: '👥', desc: '2 Players' },
-                  { value: 'hva' as GameMode, label: 'vs AI',  icon: '🤖', desc: 'Computer'  },
-                  { value: 'ava' as GameMode, label: 'Watch', icon: '👁️', desc: 'AI vs AI'  },
+                  { value: 'hvh' as GameMode, label: 'Local', icon: Icon.users, desc: '2 Players' },
+                  { value: 'hva' as GameMode, label: 'vs AI',  icon: Icon.cpu,   desc: 'Computer'  },
+                  { value: 'ava' as GameMode, label: 'Watch', icon: Icon.eye,   desc: 'AI vs AI'  },
                 ].map(opt => (
                   <button key={opt.value} onClick={() => setMode(opt.value)}
                     className={`option-btn ${mode === opt.value ? 'option-btn-active' : ''}`}>
@@ -92,7 +134,7 @@ export default function HomeView() {
               <div>
                 <label className="field-label">
                   Difficulty
-                  <span style={{ marginLeft:8, color:'var(--accent)', fontWeight:700 }}>
+                  <span style={{ marginLeft:8, color:'var(--accent-hover)', fontWeight:700 }}>
                     {diffs.find(d => d.value === difficulty)?.elo} ELO
                   </span>
                 </label>
@@ -146,22 +188,25 @@ export default function HomeView() {
               </div>
             )}
 
-            <button onClick={handlePlay} className="play-btn">Play</button>
+            <button onClick={handlePlay} className="play-btn">
+              Play
+              <span className="play-btn-icon">{Icon.arrow}</span>
+            </button>
           </div>
         </div>
 
         {/* Quick Actions */}
         <div className="quick-actions">
           <button onClick={() => { sounds.gameStart(); newGame({ mode:'hva', difficulty:'beginner', playerColor:'white' }); }} className="quick-action">
-            <div className="quick-action-icon">⚡</div>
+            <div className="quick-action-icon">{Icon.bolt}</div>
             <div className="quick-action-label">Quick Play</div>
           </button>
           <button onClick={() => setView('analysis')} className="quick-action">
-            <div className="quick-action-icon">🔬</div>
+            <div className="quick-action-icon">{Icon.analysis}</div>
             <div className="quick-action-label">Analyze</div>
           </button>
           <button onClick={() => setView('settings')} className="quick-action">
-            <div className="quick-action-icon">⚙️</div>
+            <div className="quick-action-icon">{Icon.gear}</div>
             <div className="quick-action-label">Settings</div>
           </button>
         </div>
